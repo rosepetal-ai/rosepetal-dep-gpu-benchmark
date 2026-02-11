@@ -1,0 +1,171 @@
+===== glmark2 =====
+Timestamp: mié 11 feb 2026 15:46:52 CET
+
+GPU status BEFORE:
+Wed Feb 11 15:46:52 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 590.48.01              Driver Version: 590.48.01      CUDA Version: 13.1     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3060        On  |   00000000:01:00.0  On |                  N/A |
+|  0%   48C    P8             18W /  170W |     428MiB /  12288MiB |     13%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            1740      G   /usr/lib/xorg/Xorg                      108MiB |
+|    0   N/A  N/A            1960      G   /usr/bin/gnome-shell                     28MiB |
+|    0   N/A  N/A            3497      G   .../7766/usr/lib/firefox/firefox        231MiB |
++-----------------------------------------------------------------------------------------+
+
+----- Benchmark output -----
+pci id for fd 4: 10de:2487, driver (null)
+pci id for fd 5: 10de:2487, driver (null)
+pci id for fd 6: 10de:2487, driver (null)
+glx: failed to create dri3 screen
+failed to load driver: nvidia-drm
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+=======================================================
+    glmark2 2023.01
+=======================================================
+    OpenGL Information
+    GL_VENDOR:      Mesa
+    GL_RENDERER:    llvmpipe (LLVM 20.1.2, 256 bits)
+    GL_VERSION:     4.5 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.1
+    Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=0 samples=0
+    Surface Size:   800x600 windowed
+=======================================================
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[build] use-vbo=false: FPS: 1117 FrameTime: 0.896 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[build] use-vbo=true: FPS: 1138 FrameTime: 0.879 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[texture] texture-filter=nearest: FPS: 2024 FrameTime: 0.494 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[texture] texture-filter=linear: FPS: 1915 FrameTime: 0.522 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[texture] texture-filter=mipmap: FPS: 1693 FrameTime: 0.591 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[shading] shading=gouraud: FPS: 819 FrameTime: 1.221 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[shading] shading=blinn-phong-inf: FPS: 754 FrameTime: 1.326 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[shading] shading=phong: FPS: 696 FrameTime: 1.438 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[shading] shading=cel: FPS: 683 FrameTime: 1.464 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[bump] bump-render=high-poly: FPS: 330 FrameTime: 3.032 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[bump] bump-render=normals: FPS: 1831 FrameTime: 0.546 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[bump] bump-render=height: FPS: 1798 FrameTime: 0.556 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 1556 FrameTime: 0.643 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 1194 FrameTime: 0.838 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[pulsar] light=false:quads=5:texture=false: FPS: 1648 FrameTime: 0.607 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 329 FrameTime: 3.041 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[desktop] effect=shadow:windows=4: FPS: 804 FrameTime: 1.244 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 532 FrameTime: 1.882 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 520 FrameTime: 1.927 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 551 FrameTime: 1.816 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[ideas] speed=duration: FPS: 855 FrameTime: 1.170 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[jellyfish] <default>: FPS: 484 FrameTime: 2.068 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[terrain] <default>: FPS: 32 FrameTime: 31.699 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[shadow] <default>: FPS: 559 FrameTime: 1.790 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[refract] <default>: FPS: 54 FrameTime: 18.811 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 1157 FrameTime: 0.865 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 1124 FrameTime: 0.890 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 1160 FrameTime: 0.862 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[function] fragment-complexity=low:fragment-steps=5: FPS: 1149 FrameTime: 0.871 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 1070 FrameTime: 0.935 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 1119 FrameTime: 0.894 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 1110 FrameTime: 0.902 ms
+** GLX does not support GLX_EXT_swap_control or GLX_MESA_swap_control!
+** Failed to set swap interval. Results may be bounded above by refresh rate.
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 1006 FrameTime: 0.995 ms
+=======================================================
+                                  glmark2 Score: 993 
+=======================================================
+
+GPU status AFTER:
+Wed Feb 11 15:52:22 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 590.48.01              Driver Version: 590.48.01      CUDA Version: 13.1     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3060        On  |   00000000:01:00.0  On |                  N/A |
+|  0%   46C    P0             51W /  170W |     428MiB /  12288MiB |     37%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            1740      G   /usr/lib/xorg/Xorg                      112MiB |
+|    0   N/A  N/A            1960      G   /usr/bin/gnome-shell                     28MiB |
+|    0   N/A  N/A            3497      G   .../7766/usr/lib/firefox/firefox        222MiB |
++-----------------------------------------------------------------------------------------+
