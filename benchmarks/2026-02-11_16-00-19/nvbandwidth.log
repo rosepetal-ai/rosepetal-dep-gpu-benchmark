@@ -1,0 +1,208 @@
+===== nvbandwidth =====
+Timestamp: mié 11 feb 2026 16:00:19 CET
+
+GPU status BEFORE:
+Wed Feb 11 16:00:19 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 590.48.01              Driver Version: 590.48.01      CUDA Version: 13.1     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3060        On  |   00000000:01:00.0  On |                  N/A |
+| 68%   44C    P8             23W /  170W |     550MiB /  12288MiB |     37%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            1740      G   /usr/lib/xorg/Xorg                      103MiB |
+|    0   N/A  N/A            1960      G   /usr/bin/gnome-shell                     41MiB |
+|    0   N/A  N/A            3497      G   .../7766/usr/lib/firefox/firefox        345MiB |
++-----------------------------------------------------------------------------------------+
+
+----- Benchmark output -----
+nvbandwidth Version: v0.8
+Built from Git version: v0.8
+
+CUDA Runtime Version: 13010
+CUDA Driver Version: 13010
+Driver Version: 590.48.01
+
+test-NUC11BTMi9
+Device 0: NVIDIA GeForce RTX 3060 (00000000:01:00)
+
+Running host_to_device_memcpy_ce.
+memcpy CE CPU(row) -> GPU(column) bandwidth (GB/s)
+           0
+ 0      7.09
+
+SUM host_to_device_memcpy_ce 7.09
+
+Running device_to_host_memcpy_ce.
+memcpy CE CPU(row) <- GPU(column) bandwidth (GB/s)
+           0
+ 0      7.08
+
+SUM device_to_host_memcpy_ce 7.08
+
+Running host_to_device_bidirectional_memcpy_ce.
+memcpy CE CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      5.37
+
+SUM host_to_device_bidirectional_memcpy_ce 5.37
+
+Running device_to_host_bidirectional_memcpy_ce.
+memcpy CE CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      5.84
+
+SUM device_to_host_bidirectional_memcpy_ce 5.84
+
+Waived: 
+Waived: 
+Waived: 
+Waived: 
+Running all_to_host_memcpy_ce.
+memcpy CE CPU(row) <- GPU(column) bandwidth (GB/s)
+           0
+ 0      7.01
+
+SUM all_to_host_memcpy_ce 7.01
+
+Running all_to_host_bidirectional_memcpy_ce.
+memcpy CE CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      5.84
+
+SUM all_to_host_bidirectional_memcpy_ce 5.84
+
+Running host_to_all_memcpy_ce.
+memcpy CE CPU(row) -> GPU(column) bandwidth (GB/s)
+           0
+ 0      7.15
+
+SUM host_to_all_memcpy_ce 7.15
+
+Running host_to_all_bidirectional_memcpy_ce.
+memcpy CE CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      5.30
+
+SUM host_to_all_bidirectional_memcpy_ce 5.30
+
+Waived: 
+Waived: 
+Waived: 
+Waived: 
+Running host_to_device_memcpy_sm.
+memcpy SM CPU(row) -> GPU(column) bandwidth (GB/s)
+           0
+ 0      6.06
+
+SUM host_to_device_memcpy_sm 6.06
+
+Running device_to_host_memcpy_sm.
+memcpy SM CPU(row) <- GPU(column) bandwidth (GB/s)
+           0
+ 0      6.09
+
+SUM device_to_host_memcpy_sm 6.09
+
+Running host_to_device_bidirectional_memcpy_sm.
+memcpy SM CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      9.72
+
+SUM host_to_device_bidirectional_memcpy_sm 9.72
+
+Running device_to_host_bidirectional_memcpy_sm.
+memcpy SM CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      8.39
+
+SUM device_to_host_bidirectional_memcpy_sm 8.39
+
+Waived: 
+Waived: 
+Waived: 
+Waived: 
+Running all_to_host_memcpy_sm.
+memcpy SM CPU(row) <- GPU(column) bandwidth (GB/s)
+           0
+ 0      6.03
+
+SUM all_to_host_memcpy_sm 6.03
+
+Running all_to_host_bidirectional_memcpy_sm.
+memcpy SM CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      9.52
+
+SUM all_to_host_bidirectional_memcpy_sm 9.52
+
+Running host_to_all_memcpy_sm.
+memcpy SM CPU(row) -> GPU(column) bandwidth (GB/s)
+           0
+ 0      6.06
+
+SUM host_to_all_memcpy_sm 6.06
+
+Running host_to_all_bidirectional_memcpy_sm.
+memcpy SM CPU(row) <-> GPU(column) bandwidth (GB/s)
+           0
+ 0      9.53
+
+SUM host_to_all_bidirectional_memcpy_sm 9.53
+
+Waived: 
+Waived: 
+Waived: 
+Waived: 
+Running host_device_latency_sm.
+memory latency SM CPU(row) <-> GPU(column) (ns)
+           0
+ 0    743.44
+
+SUM host_device_latency_sm 743.44
+
+Waived: 
+Running device_local_copy.
+memcpy local GPU(column) bandwidth (GB/s)
+           0
+ 0    155.74
+
+SUM device_local_copy 155.74
+
+NOTE: The reported results may not reflect the full capabilities of the platform.
+Performance can vary with software drivers, hardware clocks, and system topology.
+
+
+GPU status AFTER:
+Wed Feb 11 16:01:59 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 590.48.01              Driver Version: 590.48.01      CUDA Version: 13.1     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3060        On  |   00000000:01:00.0  On |                  N/A |
+|  0%   50C    P2             72W /  170W |     596MiB /  12288MiB |     98%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            1740      G   /usr/lib/xorg/Xorg                      103MiB |
+|    0   N/A  N/A            1960      G   /usr/bin/gnome-shell                     41MiB |
+|    0   N/A  N/A            3497      G   .../7766/usr/lib/firefox/firefox        391MiB |
++-----------------------------------------------------------------------------------------+

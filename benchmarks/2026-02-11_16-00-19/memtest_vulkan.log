@@ -1,0 +1,82 @@
+===== memtest_vulkan =====
+Timestamp: mié 11 feb 2026 16:02:14 CET
+
+GPU status BEFORE:
+Wed Feb 11 16:02:14 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 590.48.01              Driver Version: 590.48.01      CUDA Version: 13.1     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3060        On  |   00000000:01:00.0  On |                  N/A |
+|  0%   47C    P8             23W /  170W |     572MiB /  12288MiB |     43%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            1740      G   /usr/lib/xorg/Xorg                      103MiB |
+|    0   N/A  N/A            1960      G   /usr/bin/gnome-shell                     41MiB |
+|    0   N/A  N/A            3497      G   .../7766/usr/lib/firefox/firefox        367MiB |
++-----------------------------------------------------------------------------------------+
+
+----- Benchmark output -----
+https://github.com/GpuZelenograd/[32mmemtest_vulkan v0.5.0 by GpuZelenograd
+(B[m[?12l[?25hTo finish testing use Ctrl+C
+
+1: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+2: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+[K(first device will be autoselected in 9 seconds)   Override index to test:[K(first device will be autoselected in 9 seconds)   Override index to test:[K(first device will be autoselected in 9 seconds)   Override index to test:[K(first device will be autoselected in 9 seconds)   Override index to test:[K(first device will be autoselected in 8 seconds)   Override index to test:[K(first device will be autoselected in 8 seconds)   Override index to test:[K(first device will be autoselected in 8 seconds)   Override index to test:[K(first device will be autoselected in 8 seconds)   Override index to test:[K(first device will be autoselected in 7 seconds)   Override index to test:[K(first device will be autoselected in 7 seconds)   Override index to test:[K(first device will be autoselected in 7 seconds)   Override index to test:[K(first device will be autoselected in 7 seconds)   Override index to test:[K(first device will be autoselected in 6 seconds)   Override index to test:[K(first device will be autoselected in 6 seconds)   Override index to test:[K(first device will be autoselected in 6 seconds)   Override index to test:[K(first device will be autoselected in 6 seconds)   Override index to test:[K(first device will be autoselected in 5 seconds)   Override index to test:[K(first device will be autoselected in 5 seconds)   Override index to test:[K(first device will be autoselected in 5 seconds)   Override index to test:[K(first device will be autoselected in 5 seconds)   Override index to test:[K(first device will be autoselected in 4 seconds)   Override index to test:[K(first device will be autoselected in 4 seconds)   Override index to test:[K(first device will be autoselected in 4 seconds)   Override index to test:[K(first device will be autoselected in 4 seconds)   Override index to test:[K(first device will be autoselected in 3 seconds)   Override index to test:[K(first device will be autoselected in 3 seconds)   Override index to test:[K(first device will be autoselected in 3 seconds)   Override index to test:[K(first device will be autoselected in 3 seconds)   Override index to test:[K(first device will be autoselected in 2 seconds)   Override index to test:[K(first device will be autoselected in 2 seconds)   Override index to test:[K(first device will be autoselected in 2 seconds)   Override index to test:[K(first device will be autoselected in 2 seconds)   Override index to test:[K(first device will be autoselected in 1 seconds)   Override index to test:[K(first device will be autoselected in 1 seconds)   Override index to test:[K(first device will be autoselected in 1 seconds)   Override index to test:[K(first device will be autoselected in 1 seconds)   Override index to test:[K(first device will be autoselected in 0 seconds)   Override index to test:[K(first device will be autoselected in 0 seconds)   Override index to test:[K(first device will be autoselected in 0 seconds)   Override index to test:[K(first device will be autoselected in 0 seconds)   Override index to test:
+    ...first device autoselected
+[?12l[?25hStandard 5-minute test of 1: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+      1 iteration. Passed  0.9609 seconds  written:    5.8GB  18.4GB/sec        checked:    8.6GB  13.3GB/sec
+      3 iteration. Passed  1.9170 seconds  written:   11.5GB  18.7GB/sec        checked:   17.2GB  13.3GB/sec
+      9 iteration. Passed  5.7690 seconds  written:   34.5GB  18.5GB/sec        checked:   51.8GB  13.3GB/sec
+     41 iteration. Passed 30.7395 seconds  written:  184.0GB  18.6GB/sec        checked:  276.0GB  13.2GB/sec
+     72 iteration. Passed 30.4072 seconds  written:  178.2GB  17.7GB/sec        checked:  267.4GB  13.2GB/sec
+    103 iteration. Passed 30.5416 seconds  written:  178.2GB  17.4GB/sec        checked:  267.4GB  13.2GB/sec
+    133 iteration. Passed 30.2737 seconds  written:  172.5GB  15.6GB/sec        checked:  258.8GB  13.5GB/sec
+    164 iteration. Passed 30.5893 seconds  written:  178.2GB  16.7GB/sec        checked:  267.4GB  13.4GB/sec
+    196 iteration. Passed 30.7900 seconds  written:  184.0GB  18.1GB/sec        checked:  276.0GB  13.4GB/sec
+    226 iteration. Passed 30.1231 seconds  written:  172.5GB  16.4GB/sec        checked:  258.8GB  13.2GB/sec
+    256 iteration. Passed 30.3130 seconds  written:  172.5GB  16.1GB/sec        checked:  258.8GB  13.2GB/sec
+    286 iteration. Passed 30.2176 seconds  written:  172.5GB  16.2GB/sec        checked:  258.8GB  13.2GB/sec
+Standard 5-minute test PASSed! Just press Ctrl+C unless you plan long test run.
+Extended endless test started; testing more than 2 hours is usually unneeded
+use Ctrl+C to stop it when you decide it's enough
+    346 iteration. Passed 30.1576 seconds  written:  172.5GB  16.1GB/sec        checked:  258.8GB  13.3GB/sec
+    377 iteration. Passed 30.7728 seconds  written:  178.2GB  16.8GB/sec        checked:  267.4GB  13.3GB/sec
+    408 iteration. Passed 30.4193 seconds  written:  178.2GB  17.3GB/sec        checked:  267.4GB  13.3GB/sec
+    438 iteration. Passed 30.3040 seconds  written:  172.5GB  15.9GB/sec        checked:  258.8GB  13.3GB/sec
+
+[32mmemtest_vulkan: no any errors, testing PASSed.
+  press any key to continue...(B[m
+[?12l[?25h
+GPU status AFTER:
+Wed Feb 11 16:10:16 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 590.48.01              Driver Version: 590.48.01      CUDA Version: 13.1     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 3060        On  |   00000000:01:00.0  On |                  N/A |
+|  0%   49C    P5             25W /  170W |     584MiB /  12288MiB |     17%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            1740      G   /usr/lib/xorg/Xorg                       99MiB |
+|    0   N/A  N/A            1960      G   /usr/bin/gnome-shell                     37MiB |
+|    0   N/A  N/A            3497      G   .../7766/usr/lib/firefox/firefox        386MiB |
++-----------------------------------------------------------------------------------------+

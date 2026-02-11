@@ -1,0 +1,9 @@
+Tester console logging started at 2026-02-11T15:37:32.594289Z
+
+1: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+Tester worker logging started at 2026-02-11T15:37:33.233090Z
+Standard 5-minute test of 1: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+      1 iteration. Passed  0.4400 seconds  written:    1.9GB   8.9GB/sec        checked:    3.8GB  16.3GB/sec
+      4 iteration. Passed  1.2784 seconds  written:    5.6GB   8.9GB/sec        checked:   11.2GB  17.4GB/sec
+     16 iteration. Passed  5.1584 seconds  written:   22.5GB   8.9GB/sec        checked:   45.0GB  17.2GB/sec
+     87 iteration. Passed 30.0453 seconds  written:  133.1GB   9.0GB/sec        checked:  266.2GB  17.5GB/sec
