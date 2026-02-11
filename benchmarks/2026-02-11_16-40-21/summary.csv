@@ -1,0 +1,8 @@
+test,metric,value,unit,better
+nvbandwidth,exit_code,0,code,lower
+nvbandwidth,cmd_echo_h2d_bw,123.4,GB_s,higher
+nvbandwidth,h2d_bw,123.4,GB_s,higher
+memtest_vulkan,exit_code,0,code,lower
+memtest_vulkan,errors,0,count,lower
+glmark2,exit_code,0,code,lower
+glmark2,score,999,points,higher

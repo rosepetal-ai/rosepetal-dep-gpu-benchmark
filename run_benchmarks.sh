@@ -46,6 +46,7 @@ GLMARK_CMD="${GLMARK_CMD:-./glmark2}"
 
 WARN_PCT="${WARN_PCT:-5}"
 FAIL_PCT="${FAIL_PCT:-10}"
+AWK_BIN="${AWK_BIN:-$(command -v gawk || command -v awk || true)}"
 
 UPDATE_BASELINE=0
 NO_DIFF=0
@@ -184,10 +185,7 @@ run_cmd_capture() {
 parse_glmark2() {
   local out="$1"
   local score=""
-  score="$(strip_ansi < "$out" | grep -Eo 'glmark2 Score:[[:space:]]*[0-9]+' | tail -n1 | grep -Eo '[0-9]+' || true)"
-  if [[ -z "$score" ]]; then
-    score="$(strip_ansi < "$out" | grep -Eo 'Score:[[:space:]]*[0-9]+' | tail -n1 | grep -Eo '[0-9]+' || true)"
-  fi
+  score="$(strip_ansi < "$out" | sed -n 's/.*[Ss]core:[[:space:]]*\([0-9][0-9]*\).*/\1/p' | tail -n1 || true)"
   if [[ -n "$score" ]]; then
     emit_metric "glmark2" "score" "$score" "points" "higher"
   fi
@@ -195,13 +193,19 @@ parse_glmark2() {
 
 parse_nvbandwidth() {
   local out="$1"
+  [[ -n "$AWK_BIN" ]] || return 0
   # Extrae cualquier línea con GB/s o MB/s y crea métricas por el prefijo del texto.
   # Esto lo hace relativamente robusto frente a cambios de formato.
-  strip_ansi < "$out" | gawk '
-    match($0, /([0-9]+([.][0-9]+)?) *([GM]B\/s)/, m) {
-      val=m[1]; unit=m[3];
+  strip_ansi < "$out" | "$AWK_BIN" '
+    match($0, /[0-9]+([.][0-9]+)? *([GM]B\/s)/) {
+      token=substr($0, RSTART, RLENGTH);
+      val=token;
+      unit=token;
+      sub(/[[:space:]]*[GM]B\/s$/, "", val);
+      sub(/^.*[[:space:]]/, "", unit);
+      gsub(/[[:space:]]+/, "", unit);
       metric=$0;
-      sub(/([0-9]+([.][0-9]+)?) *([GM]B\/s).*/, "", metric);
+      sub(/[0-9]+([.][0-9]+)? *([GM]B\/s).*/, "", metric);
       gsub(/^[[:space:]:-]+/, "", metric);
       gsub(/[[:space:]:-]+$/, "", metric);
       gsub(/[[:space:]]+/, "_", metric);
@@ -243,8 +247,9 @@ compare_summaries() {
   local base_csv="$1"
   local cur_csv="$2"
   local report="$3"
+  [[ -n "$AWK_BIN" ]] || return 2
 
-  gawk -F',' -v warn="$WARN_PCT" -v fail="$FAIL_PCT" '
+  "$AWK_BIN" -F',' -v warn="$WARN_PCT" -v fail="$FAIL_PCT" '
     function abs(x){ return x<0 ? -x : x }
 
     NR==1 && FNR==1 { next }           # salta header baseline

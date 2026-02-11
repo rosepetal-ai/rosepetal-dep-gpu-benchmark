@@ -11,3 +11,9 @@ Standard 5-minute test of 1: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1
       4 iteration. Passed  1.2784 seconds  written:    5.6GB   8.9GB/sec        checked:   11.2GB  17.4GB/sec
      16 iteration. Passed  5.1584 seconds  written:   22.5GB   8.9GB/sec        checked:   45.0GB  17.2GB/sec
      87 iteration. Passed 30.0453 seconds  written:  133.1GB   9.0GB/sec        checked:  266.2GB  17.5GB/sec
+    159 iteration. Passed 30.3630 seconds  written:  135.0GB   9.0GB/sec        checked:  270.0GB  17.6GB/sec
+
+memtest_vulkan: no any errors, testing PASSed.
+----------------------------------------
+timestamp_end=2026-02-11T16:39:10+01:00
+exit_code=72
