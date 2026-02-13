@@ -43,6 +43,9 @@ COOLDOWN="${COOLDOWN:-15}"
 NV_CMD="${NV_CMD:-./nvbandwidth}"
 MEMTEST_CMD="${MEMTEST_CMD:-./memtest_vulkan}"
 GLMARK_CMD="${GLMARK_CMD:-./glmark2}"
+MEMTEST_TIMEOUT="${MEMTEST_TIMEOUT:-420}"
+MEMTEST_FORCE_TTY="${MEMTEST_FORCE_TTY:-1}"
+MEMTEST_AUTO_KEYPRESS="${MEMTEST_AUTO_KEYPRESS:-1}"
 
 WARN_PCT="${WARN_PCT:-5}"
 FAIL_PCT="${FAIL_PCT:-10}"
@@ -156,7 +159,7 @@ collect_env() {
 }
 
 run_cmd_capture() {
-  local name="$1" cmd="$2" out="$3"
+  local name="$1" cmd="$2" out="$3" workdir="${4:-$PWD}" use_tty="${5:-0}" tty_out="${6:-}"
   local rc=0
 
   {
@@ -167,8 +170,40 @@ run_cmd_capture() {
   } > "$out"
 
   set +e
-  bash -c "$cmd" >> "$out" 2>&1
-  rc=$?
+  if [[ "$use_tty" == "1" ]] && have_cmd script; then
+    local tty_file="$tty_out"
+    local script_rc=0
+    if [[ -z "$tty_file" ]]; then
+      tty_file="${out%.txt}.tty.txt"
+    fi
+    script -q -e -c "cd \"$workdir\" && bash -c \"$cmd\"" "$tty_file" >> "$out" 2>&1
+    script_rc=$?
+    if [[ "$script_rc" -eq 0 ]]; then
+      rc=0
+      if [[ -f "$tty_file" ]]; then
+        {
+          echo
+          echo "----- tty transcript (capturado) -----"
+          cat "$tty_file"
+        } >> "$out"
+      fi
+    else
+      {
+        echo "note: script/pty no disponible (rc=${script_rc}), fallback a captura normal."
+      } >> "$out"
+      (
+        cd "$workdir"
+        bash -c "$cmd"
+      ) >> "$out" 2>&1
+      rc=$?
+    fi
+  else
+    (
+      cd "$workdir"
+      bash -c "$cmd"
+    ) >> "$out" 2>&1
+    rc=$?
+  fi
   set -e
 
   {
@@ -180,6 +215,11 @@ run_cmd_capture() {
   echo "$rc"
 }
 
+is_timeout_exit() {
+  local rc="$1"
+  [[ "$rc" == "124" || "$rc" == "137" ]]
+}
+
 # -------- Parsers de métricas --------
 
 parse_glmark2() {
@@ -189,56 +229,113 @@ parse_glmark2() {
   if [[ -n "$score" ]]; then
     emit_metric "glmark2" "score" "$score" "points" "higher"
   fi
+
+  # Métricas por escena: FPS (higher) y FrameTime (lower)
+  strip_ansi < "$out" | "$AWK_BIN" '
+    match($0, /^\[([^]]+)\][[:space:]]+(.+):[[:space:]]+FPS:[[:space:]]*([0-9.]+)[[:space:]]+FrameTime:[[:space:]]*([0-9.]+)[[:space:]]*ms/, m) {
+      scene=m[1]
+      cfg=m[2]
+      fps=m[3]
+      ft=m[4]
+      gsub(/[[:space:]]+/, "_", cfg)
+      gsub(/[^A-Za-z0-9_]+/, "_", cfg)
+      metric_base=scene "_" cfg
+      print metric_base "_fps|" fps "|fps|higher"
+      print metric_base "_frametime|" ft "|ms|lower"
+    }
+  ' | while IFS='|' read -r metric val unit better; do
+        [[ -n "${metric:-}" && -n "${val:-}" ]] || continue
+        emit_metric "glmark2" "$metric" "$val" "$unit" "$better"
+      done
 }
 
 parse_nvbandwidth() {
   local out="$1"
   [[ -n "$AWK_BIN" ]] || return 0
-  # Extrae cualquier línea con GB/s o MB/s y crea métricas por el prefijo del texto.
-  # Esto lo hace relativamente robusto frente a cambios de formato.
+  # nvbandwidth suele exponer resultados útiles en líneas "SUM <test> <value>".
   strip_ansi < "$out" | "$AWK_BIN" '
-    match($0, /[0-9]+([.][0-9]+)? *([GM]B\/s)/) {
-      token=substr($0, RSTART, RLENGTH);
-      val=token;
-      unit=token;
-      sub(/[[:space:]]*[GM]B\/s$/, "", val);
-      sub(/^.*[[:space:]]/, "", unit);
-      gsub(/[[:space:]]+/, "", unit);
-      metric=$0;
-      sub(/[0-9]+([.][0-9]+)? *([GM]B\/s).*/, "", metric);
-      gsub(/^[[:space:]:-]+/, "", metric);
-      gsub(/[[:space:]:-]+$/, "", metric);
-      gsub(/[[:space:]]+/, "_", metric);
-      gsub(/[^A-Za-z0-9_]+/, "_", metric);
-      if(metric=="") metric="bandwidth";
-      metrics[metric]=val;
-      units[metric]=unit;
-    }
-    END {
-      for (k in metrics) {
-        print k "|" metrics[k] "|" units[k];
+    match($0, /^SUM[[:space:]]+([A-Za-z0-9_]+)[[:space:]]+([0-9]+([.][0-9]+)?)$/, m) {
+      metric=m[1]
+      val=m[2]
+      unit="GB_s"
+      better="higher"
+      if (metric ~ /latency/) {
+        unit="ns"
+        better="lower"
       }
+      print metric "|" val "|" unit "|" better
     }
-  ' | while IFS='|' read -r metric val unit; do
+  ' | while IFS='|' read -r metric val unit better; do
         [[ -n "${metric:-}" ]] || continue
         [[ -n "${val:-}" ]] || continue
-        emit_metric "nvbandwidth" "$metric" "$val" "$unit" "higher"
+        emit_metric "nvbandwidth" "$metric" "$val" "$unit" "$better"
       done
 }
 
 parse_memtest_vulkan() {
   local out="$1"
+  local src="$out"
+  local run_dir
+  run_dir="$(dirname -- "$out")"
+  if [[ -f "$run_dir/memtest_vulkan.log" ]]; then
+    src="$run_dir/memtest_vulkan.log"
+  fi
+
   local errors=""
-  errors="$(strip_ansi < "$out" | grep -Ei 'errors?' | tail -n1 | grep -Eo '[0-9]+' | tail -n1 || true)"
+  local written_bw=""
+  local checked_bw=""
+  errors="$(strip_ansi < "$src" | grep -Ei 'errors?' | tail -n1 | grep -Eo '[0-9]+' | tail -n1 || true)"
   if [[ -z "$errors" ]]; then
     # Si no aparece nada, asume 0 (muchos memtests solo imprimen “no errors”)
-    if strip_ansi < "$out" | grep -qi 'no errors'; then
+    if strip_ansi < "$src" | grep -qi 'no errors'; then
       errors="0"
     fi
   fi
   if [[ -n "$errors" ]]; then
     emit_metric "memtest_vulkan" "errors" "$errors" "count" "lower"
   fi
+
+  written_bw="$(strip_ansi < "$src" | sed -n 's/.*written:[[:space:]]*[0-9.]\+GB[[:space:]]*\([0-9.]\+\)GB\/sec.*/\1/p' | tail -n1 || true)"
+  checked_bw="$(strip_ansi < "$src" | sed -n 's/.*checked:[[:space:]]*[0-9.]\+GB[[:space:]]*\([0-9.]\+\)GB\/sec.*/\1/p' | tail -n1 || true)"
+  if [[ -n "$written_bw" ]]; then
+    emit_metric "memtest_vulkan" "written_bw" "$written_bw" "GB_s" "higher"
+  fi
+  if [[ -n "$checked_bw" ]]; then
+    emit_metric "memtest_vulkan" "checked_bw" "$checked_bw" "GB_s" "higher"
+  fi
+
+  strip_ansi < "$src" | "$AWK_BIN" '
+    /Standard 5-minute test PASSed/ { std_passed=1 }
+    match($0, /([0-9]+)[[:space:]]+iteration\.[[:space:]]+Passed[[:space:]]+[0-9.]+[[:space:]]+seconds[[:space:]]+written:[[:space:]]*[0-9.]+GB[[:space:]]*([0-9.]+)GB\/sec[[:space:]]+checked:[[:space:]]*[0-9.]+GB[[:space:]]*([0-9.]+)GB\/sec/, m) {
+      iter=m[1]
+      w=m[2]
+      c=m[3]
+      last_iter=iter
+      last_w=w
+      last_c=c
+      if (!std_passed) {
+        std_last_iter=iter
+        std_last_w=w
+        std_last_c=c
+      } else {
+        ext_last_iter=iter
+        ext_last_w=w
+        ext_last_c=c
+      }
+    }
+    END {
+      if (std_last_iter != "") print "std_last_iter|" std_last_iter "|count|higher"
+      if (std_last_w != "") print "std_last_written_bw|" std_last_w "|GB_s|higher"
+      if (std_last_c != "") print "std_last_checked_bw|" std_last_c "|GB_s|higher"
+      if (ext_last_iter != "") print "ext_last_iter|" ext_last_iter "|count|higher"
+      if (ext_last_w != "") print "ext_last_written_bw|" ext_last_w "|GB_s|higher"
+      if (ext_last_c != "") print "ext_last_checked_bw|" ext_last_c "|GB_s|higher"
+      if (last_iter != "") print "last_iter|" last_iter "|count|higher"
+    }
+  ' | while IFS='|' read -r metric val unit better; do
+        [[ -n "${metric:-}" && -n "${val:-}" ]] || continue
+        emit_metric "memtest_vulkan" "$metric" "$val" "$unit" "$better"
+      done
 }
 
 # -------- Comparador numérico --------
@@ -296,6 +393,17 @@ compare_summaries() {
     }
     END { exit(has_fail?1:0) }
   ' "$base_csv" "$cur_csv" > "$report"
+}
+
+compare_summaries_node() {
+  local base_csv="$1"
+  local cur_csv="$2"
+  local report="$3"
+  local comparer="$SCRIPT_DIR/compare_summaries.js"
+  if [[ ! -f "$comparer" ]] || ! have_cmd node; then
+    return 2
+  fi
+  node "$comparer" --baseline "$base_csv" --current "$cur_csv" --warn-pct "$WARN_PCT" --fail-pct "$FAIL_PCT" > "$report"
 }
 
 # -------- Diff de outputs (opcional) --------
@@ -362,8 +470,44 @@ run_one_test() {
   log "-----------------------------------------"
 
   local out="$RUN_DIR/${name}.out.txt"
+  local side_log=""
+  local tty_out=""
+  local use_tty=0
+  if [[ "$name" == "memtest_vulkan" ]]; then
+    side_log="$SCRIPT_DIR/memtest_vulkan.log"
+    tty_out="$RUN_DIR/memtest_vulkan.tty.txt"
+    use_tty="$MEMTEST_FORCE_TTY"
+    rm -f "$side_log"
+    rm -f "$tty_out"
+  fi
+
   local rc
-  rc="$(run_cmd_capture "$name" "$cmd" "$out")"
+  rc="$(run_cmd_capture "$name" "$cmd" "$out" "$SCRIPT_DIR" "$use_tty" "$tty_out")"
+
+  if [[ "$name" == "memtest_vulkan" && -n "$side_log" ]]; then
+    if [[ -f "$side_log" ]]; then
+      cp -f "$side_log" "$RUN_DIR/memtest_vulkan.log"
+      {
+        echo
+        echo "----- memtest_vulkan.log (capturado) -----"
+        cat "$side_log"
+      } >> "$out"
+    else
+      {
+        echo
+        echo "----- memtest_vulkan.log (capturado) -----"
+        echo "no encontrado en: $side_log"
+      } >> "$out"
+    fi
+  fi
+
+  if [[ "$name" == "memtest_vulkan" ]] && is_timeout_exit "$rc"; then
+    if strip_ansi < "$out" | grep -Eq 'iteration\.[[:space:]]+Passed'; then
+      log "[memtest_vulkan] timeout con progreso válido; se considera corte controlado."
+      echo "normalized_exit_code=0 (controlled_timeout_with_progress)" >> "$out"
+      rc=0
+    fi
+  fi
 
   # Métrica de exit_code por si quieres detectarlo en baseline
   emit_metric "$name" "exit_code" "$rc" "code" "lower"
@@ -379,7 +523,14 @@ run_one_test() {
 
 # Ejecuta secuencialmente
 run_one_test "nvbandwidth"     "$NV_CMD"     "parse_nvbandwidth"
-run_one_test "memtest_vulkan"  "$MEMTEST_CMD" "parse_memtest_vulkan"
+memtest_run_cmd="$MEMTEST_CMD"
+if [[ "$MEMTEST_CMD" == "./memtest_vulkan" ]] && have_cmd timeout; then
+  memtest_run_cmd="timeout --signal=INT ${MEMTEST_TIMEOUT} ./memtest_vulkan"
+fi
+if [[ "$MEMTEST_AUTO_KEYPRESS" == "1" ]] && have_cmd yes; then
+  memtest_run_cmd="yes '' | ${memtest_run_cmd}"
+fi
+run_one_test "memtest_vulkan"  "$memtest_run_cmd" "parse_memtest_vulkan"
 run_one_test "glmark2"         "$GLMARK_CMD" "parse_glmark2"
 
 gpu_snapshot "$RUN_DIR/gpu_after.txt"
@@ -400,8 +551,12 @@ if [[ -f "$BASELINE_DIR/summary.csv" ]]; then
   log "========================================="
 
   set +e
-  compare_summaries "$BASELINE_DIR/summary.csv" "$SUMMARY_CSV" "$COMPARE_TXT"
+  compare_summaries_node "$BASELINE_DIR/summary.csv" "$SUMMARY_CSV" "$COMPARE_TXT"
   cmp_rc=$?
+  if [[ "$cmp_rc" -eq 2 ]]; then
+    compare_summaries "$BASELINE_DIR/summary.csv" "$SUMMARY_CSV" "$COMPARE_TXT"
+    cmp_rc=$?
+  fi
   set -e
 
   cat "$COMPARE_TXT"

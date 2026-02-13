@@ -1,8 +1,0 @@
-===== glmark2 =====
-timestamp_start=2026-02-11T16:39:25+01:00
-cmd=./glmark2
-----------------------------------------
-Error: main: Could not initialize canvas
-----------------------------------------
-timestamp_end=2026-02-11T16:39:25+01:00
-exit_code=1

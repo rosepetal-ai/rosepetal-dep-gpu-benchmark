@@ -1,0 +1,32 @@
+Script started on 2026-02-12 13:56:36+01:00 [COMMAND="cd "/home/test/gpu" && bash -c "yes '' | timeout --signal=INT 420 ./memtest_vulkan"" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+https://github.com/GpuZelenograd/memtest_vulkan v0.5.0 by GpuZelenograd
+[?12l[?25hTo finish testing use Ctrl+C
+
+1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+2: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+3: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+
+    ...testing default device confirmed
+[?12l[?25hStandard 5-minute test of 1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+      1 iteration. Passed  0.0590 seconds  written:    7.2GB 307.6GB/sec        checked:   10.9GB 306.8GB/sec
+     18 iteration. Passed  1.0042 seconds  written:  123.2GB 306.1GB/sec        checked:  184.9GB 307.3GB/sec
+    103 iteration. Passed  5.0166 seconds  written:  616.2GB 306.7GB/sec        checked:  924.4GB 307.4GB/sec
+    612 iteration. Passed 30.0296 seconds  written: 3690.2GB 306.9GB/sec        checked: 5535.4GB 307.5GB/sec
+   1121 iteration. Passed 30.0273 seconds  written: 3690.2GB 307.0GB/sec        checked: 5535.4GB 307.4GB/sec
+   1630 iteration. Passed 30.0342 seconds  written: 3690.2GB 306.9GB/sec        checked: 5535.4GB 307.3GB/sec
+   2139 iteration. Passed 30.0312 seconds  written: 3690.2GB 307.0GB/sec        checked: 5535.4GB 307.3GB/sec
+   2648 iteration. Passed 30.0303 seconds  written: 3690.2GB 307.0GB/sec        checked: 5535.4GB 307.4GB/sec
+   3157 iteration. Passed 30.0381 seconds  written: 3690.2GB 306.9GB/sec        checked: 5535.4GB 307.3GB/sec
+   3666 iteration. Passed 30.0286 seconds  written: 3690.2GB 307.1GB/sec        checked: 5535.4GB 307.3GB/sec
+   4175 iteration. Passed 30.0277 seconds  written: 3690.2GB 307.1GB/sec        checked: 5535.4GB 307.3GB/sec
+   4683 iteration. Passed 30.0567 seconds  written: 3683.0GB 306.7GB/sec        checked: 5524.5GB 306.1GB/sec
+Standard 5-minute test PASSed! Just press Ctrl+C unless you plan long test run.
+Extended endless test started; testing more than 2 hours is usually unneeded
+use Ctrl+C to stop it when you decide it's enough
+   5690 iteration. Passed 30.0010 seconds  written: 3697.5GB 308.9GB/sec        checked: 5546.2GB 307.6GB/sec
+   6200 iteration. Passed 30.0005 seconds  written: 3697.5GB 308.9GB/sec        checked: 5546.2GB 307.6GB/sec
+   6711 iteration. Passed 30.0589 seconds  written: 3704.8GB 309.0GB/sec        checked: 5557.1GB 307.6GB/sec
+
+memtest_vulkan: no any errors, testing PASSed.
+[?12l[?25h[?12l[?25h
+Script done on 2026-02-12 14:03:36+01:00 [COMMAND_EXIT_CODE="124"]

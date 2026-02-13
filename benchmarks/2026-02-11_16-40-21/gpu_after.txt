@@ -1,6 +1,0 @@
-timestamp=2026-02-11T16:40:21+01:00
-nvidia_smi_version=Failed to initialize NVML: Unknown Error 
-
-query_csv:
-(fallback) nvidia-smi
-Failed to initialize NVML: Unknown Error

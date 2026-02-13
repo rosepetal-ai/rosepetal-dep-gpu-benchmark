@@ -1,7 +1,7 @@
 test,metric,value,unit,better
 nvbandwidth,exit_code,0,code,lower
 memtest_vulkan,exit_code,0,code,lower
-memtest_vulkan,errors,0,count,lower
+memtest_vulkan,written_bw,308.8,GB_s,higher
+memtest_vulkan,checked_bw,301.2,GB_s,higher
 glmark2,exit_code,0,code,lower
-glmark2,score,2
-999,points,higher
+glmark2,score,6252,points,higher

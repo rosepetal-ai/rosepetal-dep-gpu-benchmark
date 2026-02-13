@@ -1,4 +1,0 @@
-test,metric,value,unit,better
-nvbandwidth,exit_code,1,code,lower
-memtest_vulkan,exit_code,124,code,lower
-glmark2,exit_code,1,code,lower

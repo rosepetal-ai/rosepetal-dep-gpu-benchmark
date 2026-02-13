@@ -1,0 +1,53 @@
+===== glmark2 =====
+timestamp_start=2026-02-12T14:10:52+01:00
+cmd=./glmark2
+----------------------------------------
+=======================================================
+    glmark2 2023.01
+=======================================================
+    OpenGL Information
+    GL_VENDOR:      NVIDIA Corporation
+    GL_RENDERER:    NVIDIA GeForce RTX 3060/PCIe/SSE2
+    GL_VERSION:     4.6.0 NVIDIA 590.48.01
+    Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=0 samples=0
+    Surface Size:   800x600 windowed
+=======================================================
+[build] use-vbo=false: FPS: 4300 FrameTime: 0.233 ms
+[build] use-vbo=true: FPS: 7392 FrameTime: 0.135 ms
+[texture] texture-filter=nearest: FPS: 7392 FrameTime: 0.135 ms
+[texture] texture-filter=linear: FPS: 7385 FrameTime: 0.135 ms
+[texture] texture-filter=mipmap: FPS: 7390 FrameTime: 0.135 ms
+[shading] shading=gouraud: FPS: 7249 FrameTime: 0.138 ms
+[shading] shading=blinn-phong-inf: FPS: 7244 FrameTime: 0.138 ms
+[shading] shading=phong: FPS: 7192 FrameTime: 0.139 ms
+[shading] shading=cel: FPS: 7199 FrameTime: 0.139 ms
+[bump] bump-render=high-poly: FPS: 6719 FrameTime: 0.149 ms
+[bump] bump-render=normals: FPS: 7504 FrameTime: 0.133 ms
+[bump] bump-render=height: FPS: 7478 FrameTime: 0.134 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 7200 FrameTime: 0.139 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 6667 FrameTime: 0.150 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 7376 FrameTime: 0.136 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 4477 FrameTime: 0.223 ms
+[desktop] effect=shadow:windows=4: FPS: 6255 FrameTime: 0.160 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 1787 FrameTime: 0.560 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 3377 FrameTime: 0.296 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 1967 FrameTime: 0.509 ms
+[ideas] speed=duration: FPS: 6301 FrameTime: 0.159 ms
+[jellyfish] <default>: FPS: 6800 FrameTime: 0.147 ms
+[terrain] <default>: FPS: 1799 FrameTime: 0.556 ms
+[shadow] <default>: FPS: 6325 FrameTime: 0.158 ms
+[refract] <default>: FPS: 3138 FrameTime: 0.319 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 7303 FrameTime: 0.137 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 7304 FrameTime: 0.137 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 7307 FrameTime: 0.137 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 7307 FrameTime: 0.137 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 7309 FrameTime: 0.137 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 7313 FrameTime: 0.137 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 7311 FrameTime: 0.137 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 7306 FrameTime: 0.137 ms
+=======================================================
+                                  glmark2 Score: 6252 
+=======================================================
+----------------------------------------
+timestamp_end=2026-02-12T14:16:22+01:00
+exit_code=0
