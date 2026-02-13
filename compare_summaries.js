@@ -70,19 +70,23 @@ function main() {
   const curMap = parseCsv(current);
 
   let hasFail = false;
+  const byTest = new Map();
+
+  function pushRow(test, row) {
+    if (!byTest.has(test)) byTest.set(test, []);
+    byTest.get(test).push(row);
+  }
 
   for (const [key, b] of baseMap.entries()) {
     const c = curMap.get(key);
     if (!c) {
-      const line = `${pad("FAIL", 4)} | ${pad(b.test, 14)} ${pad(b.metric, 28)} | missing in current`;
-      console.log(line);
+      pushRow(b.test, `${pad("FAIL", 4)} | ${pad(b.metric, 42)} | baseline=${fmtNum(b.value)} ${b.unit} ; current=missing`);
       hasFail = true;
       continue;
     }
 
     if (b.unit !== c.unit || b.better !== c.better) {
-      const line = `${pad("WARN", 4)} | ${pad(b.test, 14)} ${pad(b.metric, 28)} | metadata changed (${b.unit}/${b.better} -> ${c.unit}/${c.better})`;
-      console.log(line);
+      pushRow(b.test, `${pad("WARN", 4)} | ${pad(b.metric, 42)} | metadata changed (${b.unit}/${b.better} -> ${c.unit}/${c.better})`);
     }
 
     const delta = c.value - b.value;
@@ -98,16 +102,25 @@ function main() {
       else if (pct >= warnPct) status = "WARN";
     }
 
-    const line = `${pad(status, 4)} | ${pad(b.test, 14)} ${pad(b.metric, 28)} | ${fmtNum(b.value).padStart(12)} ${pad(b.unit, 7)} -> ${fmtNum(c.value).padStart(12)} ${pad(c.unit, 7)} | ${delta >= 0 ? "+" : ""}${fmtNum(delta)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`;
-    console.log(line);
+    const line = `${pad(status, 4)} | ${pad(b.metric, 42)} | ${fmtNum(b.value).padStart(10)} ${pad(b.unit, 7)} -> ${fmtNum(c.value).padStart(10)} ${pad(c.unit, 7)} | ${delta >= 0 ? "+" : ""}${fmtNum(delta)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`;
+    pushRow(b.test, line);
 
     if (status === "FAIL") hasFail = true;
   }
 
   for (const [key, c] of curMap.entries()) {
     if (baseMap.has(key)) continue;
-    const line = `${pad("INFO", 4)} | ${pad(c.test, 14)} ${pad(c.metric, 28)} | new metric in current`;
-    console.log(line);
+    pushRow(c.test, `${pad("INFO", 4)} | ${pad(c.metric, 42)} | baseline=missing ; current=${fmtNum(c.value)} ${c.unit}`);
+  }
+
+  const tests = Array.from(byTest.keys()).sort();
+  for (const test of tests) {
+    console.log(`## ${test}`);
+    const rows = byTest.get(test).slice().sort((a, b) => a.localeCompare(b));
+    for (const row of rows) {
+      console.log(row);
+    }
+    console.log("");
   }
 
   process.exit(hasFail ? 1 : 0);

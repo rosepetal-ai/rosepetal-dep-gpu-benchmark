@@ -1,0 +1,98 @@
+===== memtest_vulkan =====
+timestamp_start=2026-02-13T10:27:18+01:00
+cmd=yes '' | timeout --signal=INT 420 ./memtest_vulkan
+----------------------------------------
+https://github.com/GpuZelenograd/memtest_vulkan v0.5.0 by GpuZelenograd
+[?12l[?25hTo finish testing use Ctrl+C
+
+1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+2: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+3: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+
+    ...testing default device confirmed
+[?12l[?25hStandard 5-minute test of 1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+      1 iteration. Passed  0.0596 seconds  written:    7.2GB 305.6GB/sec        checked:   10.9GB 302.9GB/sec
+     18 iteration. Passed  1.0116 seconds  written:  123.2GB 306.1GB/sec        checked:  184.9GB 303.6GB/sec
+    103 iteration. Passed  5.0575 seconds  written:  616.2GB 305.7GB/sec        checked:  924.4GB 303.9GB/sec
+    603 iteration. Passed 30.0596 seconds  written: 3625.0GB 303.0GB/sec        checked: 5437.5GB 300.5GB/sec
+   1106 iteration. Passed 30.0519 seconds  written: 3646.8GB 304.8GB/sec        checked: 5470.1GB 302.4GB/sec
+   1611 iteration. Passed 30.0253 seconds  written: 3661.2GB 306.4GB/sec        checked: 5491.9GB 303.8GB/sec
+   2116 iteration. Passed 30.0432 seconds  written: 3661.2GB 306.1GB/sec        checked: 5491.9GB 303.7GB/sec
+   2621 iteration. Passed 30.0305 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.9GB/sec
+   3126 iteration. Passed 30.0322 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.8GB/sec
+   3631 iteration. Passed 30.0274 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 303.8GB/sec
+   4136 iteration. Passed 30.0337 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.8GB/sec
+   4641 iteration. Passed 30.0303 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.9GB/sec
+Standard 5-minute test PASSed! Just press Ctrl+C unless you plan long test run.
+Extended endless test started; testing more than 2 hours is usually unneeded
+use Ctrl+C to stop it when you decide it's enough
+   5646 iteration. Passed 30.0143 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 304.1GB/sec
+   6151 iteration. Passed 30.0234 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 303.9GB/sec
+   6654 iteration. Passed 30.0148 seconds  written: 3646.8GB 305.6GB/sec        checked: 5470.1GB 302.5GB/sec
+
+memtest_vulkan: no any errors, testing PASSed.
+[?12l[?25h[?12l[?25h
+----- tty transcript (capturado) -----
+Script started on 2026-02-13 10:27:18+01:00 [COMMAND="cd "/home/test/gpu" && bash -c "yes '' | timeout --signal=INT 420 ./memtest_vulkan"" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+https://github.com/GpuZelenograd/memtest_vulkan v0.5.0 by GpuZelenograd
+[?12l[?25hTo finish testing use Ctrl+C
+
+1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+2: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+3: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+
+    ...testing default device confirmed
+[?12l[?25hStandard 5-minute test of 1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+      1 iteration. Passed  0.0596 seconds  written:    7.2GB 305.6GB/sec        checked:   10.9GB 302.9GB/sec
+     18 iteration. Passed  1.0116 seconds  written:  123.2GB 306.1GB/sec        checked:  184.9GB 303.6GB/sec
+    103 iteration. Passed  5.0575 seconds  written:  616.2GB 305.7GB/sec        checked:  924.4GB 303.9GB/sec
+    603 iteration. Passed 30.0596 seconds  written: 3625.0GB 303.0GB/sec        checked: 5437.5GB 300.5GB/sec
+   1106 iteration. Passed 30.0519 seconds  written: 3646.8GB 304.8GB/sec        checked: 5470.1GB 302.4GB/sec
+   1611 iteration. Passed 30.0253 seconds  written: 3661.2GB 306.4GB/sec        checked: 5491.9GB 303.8GB/sec
+   2116 iteration. Passed 30.0432 seconds  written: 3661.2GB 306.1GB/sec        checked: 5491.9GB 303.7GB/sec
+   2621 iteration. Passed 30.0305 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.9GB/sec
+   3126 iteration. Passed 30.0322 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.8GB/sec
+   3631 iteration. Passed 30.0274 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 303.8GB/sec
+   4136 iteration. Passed 30.0337 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.8GB/sec
+   4641 iteration. Passed 30.0303 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.9GB/sec
+Standard 5-minute test PASSed! Just press Ctrl+C unless you plan long test run.
+Extended endless test started; testing more than 2 hours is usually unneeded
+use Ctrl+C to stop it when you decide it's enough
+   5646 iteration. Passed 30.0143 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 304.1GB/sec
+   6151 iteration. Passed 30.0234 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 303.9GB/sec
+   6654 iteration. Passed 30.0148 seconds  written: 3646.8GB 305.6GB/sec        checked: 5470.1GB 302.5GB/sec
+
+memtest_vulkan: no any errors, testing PASSed.
+[?12l[?25h[?12l[?25h
+Script done on 2026-02-13 10:34:18+01:00 [COMMAND_EXIT_CODE="124"]
+----------------------------------------
+timestamp_end=2026-02-13T10:34:18+01:00
+exit_code=124
+
+----- memtest_vulkan.log (capturado) -----
+Tester console logging started at 2026-02-13T09:27:18.496573Z
+
+1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+2: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+3: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+Tester worker logging started at 2026-02-13T09:27:18.573308Z
+Standard 5-minute test of 1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+      1 iteration. Passed  0.0596 seconds  written:    7.2GB 305.6GB/sec        checked:   10.9GB 302.9GB/sec
+     18 iteration. Passed  1.0116 seconds  written:  123.2GB 306.1GB/sec        checked:  184.9GB 303.6GB/sec
+    103 iteration. Passed  5.0575 seconds  written:  616.2GB 305.7GB/sec        checked:  924.4GB 303.9GB/sec
+    603 iteration. Passed 30.0596 seconds  written: 3625.0GB 303.0GB/sec        checked: 5437.5GB 300.5GB/sec
+   1106 iteration. Passed 30.0519 seconds  written: 3646.8GB 304.8GB/sec        checked: 5470.1GB 302.4GB/sec
+   1611 iteration. Passed 30.0253 seconds  written: 3661.2GB 306.4GB/sec        checked: 5491.9GB 303.8GB/sec
+   2116 iteration. Passed 30.0432 seconds  written: 3661.2GB 306.1GB/sec        checked: 5491.9GB 303.7GB/sec
+   2621 iteration. Passed 30.0305 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.9GB/sec
+   3126 iteration. Passed 30.0322 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.8GB/sec
+   3631 iteration. Passed 30.0274 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 303.8GB/sec
+   4136 iteration. Passed 30.0337 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.8GB/sec
+   4641 iteration. Passed 30.0303 seconds  written: 3661.2GB 306.2GB/sec        checked: 5491.9GB 303.9GB/sec
+Standard 5-minute test PASSed! Just press Ctrl+C unless you plan long test run.
+Extended endless test started; testing more than 2 hours is usually unneeded
+use Ctrl+C to stop it when you decide it's enough
+   5646 iteration. Passed 30.0143 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 304.1GB/sec
+   6151 iteration. Passed 30.0234 seconds  written: 3661.2GB 306.3GB/sec        checked: 5491.9GB 303.9GB/sec
+   6654 iteration. Passed 30.0148 seconds  written: 3646.8GB 305.6GB/sec        checked: 5470.1GB 302.5GB/sec
+normalized_exit_code=0 (controlled_timeout_with_progress)

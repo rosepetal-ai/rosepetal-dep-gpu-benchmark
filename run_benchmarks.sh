@@ -176,10 +176,9 @@ run_cmd_capture() {
     if [[ -z "$tty_file" ]]; then
       tty_file="${out%.txt}.tty.txt"
     fi
-    script -q -e -c "cd \"$workdir\" && bash -c \"$cmd\"" "$tty_file" >> "$out" 2>&1
-    script_rc=$?
-    if [[ "$script_rc" -eq 0 ]]; then
-      rc=0
+    script -q -e -c "cd \"$workdir\" && bash -c \"$cmd\"" "$tty_file" >> "$out" 2>&1 || script_rc=$?
+    if [[ "$script_rc" -eq 0 || "$script_rc" == "124" || "$script_rc" == "137" ]]; then
+      rc="$script_rc"
       if [[ -f "$tty_file" ]]; then
         {
           echo
@@ -188,9 +187,11 @@ run_cmd_capture() {
         } >> "$out"
       fi
     else
-      {
-        echo "note: script/pty no disponible (rc=${script_rc}), fallback a captura normal."
-      } >> "$out"
+      if grep -qi 'failed to create pseudo-terminal' "$out"; then
+        {
+          echo "note: script/pty no disponible (rc=${script_rc}), fallback a captura normal."
+        } >> "$out"
+      fi
       (
         cd "$workdir"
         bash -c "$cmd"
@@ -231,45 +232,37 @@ parse_glmark2() {
   fi
 
   # Métricas por escena: FPS (higher) y FrameTime (lower)
-  strip_ansi < "$out" | "$AWK_BIN" '
-    match($0, /^\[([^]]+)\][[:space:]]+(.+):[[:space:]]+FPS:[[:space:]]*([0-9.]+)[[:space:]]+FrameTime:[[:space:]]*([0-9.]+)[[:space:]]*ms/, m) {
-      scene=m[1]
-      cfg=m[2]
-      fps=m[3]
-      ft=m[4]
-      gsub(/[[:space:]]+/, "_", cfg)
-      gsub(/[^A-Za-z0-9_]+/, "_", cfg)
-      metric_base=scene "_" cfg
-      print metric_base "_fps|" fps "|fps|higher"
-      print metric_base "_frametime|" ft "|ms|lower"
-    }
-  ' | while IFS='|' read -r metric val unit better; do
-        [[ -n "${metric:-}" && -n "${val:-}" ]] || continue
-        emit_metric "glmark2" "$metric" "$val" "$unit" "$better"
-      done
+  local line scene cfg fps frametime metric_base
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^\[([^]]+)\][[:space:]]+(.+):[[:space:]]+FPS:[[:space:]]*([0-9]+([.][0-9]+)?)[[:space:]]+FrameTime:[[:space:]]*([0-9]+([.][0-9]+)?)[[:space:]]*ms ]]; then
+      scene="${BASH_REMATCH[1]}"
+      cfg="${BASH_REMATCH[2]}"
+      fps="${BASH_REMATCH[3]}"
+      frametime="${BASH_REMATCH[5]}"
+      metric_base="$(sanitize_field "${scene}_${cfg}")"
+      emit_metric "glmark2" "${metric_base}_fps" "$fps" "fps" "higher"
+      emit_metric "glmark2" "${metric_base}_frametime" "$frametime" "ms" "lower"
+    fi
+  done < <(strip_ansi < "$out")
 }
 
 parse_nvbandwidth() {
   local out="$1"
-  [[ -n "$AWK_BIN" ]] || return 0
   # nvbandwidth suele exponer resultados útiles en líneas "SUM <test> <value>".
-  strip_ansi < "$out" | "$AWK_BIN" '
-    match($0, /^SUM[[:space:]]+([A-Za-z0-9_]+)[[:space:]]+([0-9]+([.][0-9]+)?)$/, m) {
-      metric=m[1]
-      val=m[2]
+  local line metric val unit better
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^SUM[[:space:]]+([A-Za-z0-9_]+)[[:space:]]+([0-9]+([.][0-9]+)?)$ ]]; then
+      metric="${BASH_REMATCH[1]}"
+      val="${BASH_REMATCH[2]}"
       unit="GB_s"
       better="higher"
-      if (metric ~ /latency/) {
+      if [[ "$metric" == *latency* ]]; then
         unit="ns"
         better="lower"
-      }
-      print metric "|" val "|" unit "|" better
-    }
-  ' | while IFS='|' read -r metric val unit better; do
-        [[ -n "${metric:-}" ]] || continue
-        [[ -n "${val:-}" ]] || continue
-        emit_metric "nvbandwidth" "$metric" "$val" "$unit" "$better"
-      done
+      fi
+      emit_metric "nvbandwidth" "$metric" "$val" "$unit" "$better"
+    fi
+  done < <(strip_ansi < "$out")
 }
 
 parse_memtest_vulkan() {
@@ -304,38 +297,39 @@ parse_memtest_vulkan() {
     emit_metric "memtest_vulkan" "checked_bw" "$checked_bw" "GB_s" "higher"
   fi
 
-  strip_ansi < "$src" | "$AWK_BIN" '
-    /Standard 5-minute test PASSed/ { std_passed=1 }
-    match($0, /([0-9]+)[[:space:]]+iteration\.[[:space:]]+Passed[[:space:]]+[0-9.]+[[:space:]]+seconds[[:space:]]+written:[[:space:]]*[0-9.]+GB[[:space:]]*([0-9.]+)GB\/sec[[:space:]]+checked:[[:space:]]*[0-9.]+GB[[:space:]]*([0-9.]+)GB\/sec/, m) {
-      iter=m[1]
-      w=m[2]
-      c=m[3]
-      last_iter=iter
-      last_w=w
-      last_c=c
-      if (!std_passed) {
-        std_last_iter=iter
-        std_last_w=w
-        std_last_c=c
-      } else {
-        ext_last_iter=iter
-        ext_last_w=w
-        ext_last_c=c
-      }
-    }
-    END {
-      if (std_last_iter != "") print "std_last_iter|" std_last_iter "|count|higher"
-      if (std_last_w != "") print "std_last_written_bw|" std_last_w "|GB_s|higher"
-      if (std_last_c != "") print "std_last_checked_bw|" std_last_c "|GB_s|higher"
-      if (ext_last_iter != "") print "ext_last_iter|" ext_last_iter "|count|higher"
-      if (ext_last_w != "") print "ext_last_written_bw|" ext_last_w "|GB_s|higher"
-      if (ext_last_c != "") print "ext_last_checked_bw|" ext_last_c "|GB_s|higher"
-      if (last_iter != "") print "last_iter|" last_iter "|count|higher"
-    }
-  ' | while IFS='|' read -r metric val unit better; do
-        [[ -n "${metric:-}" && -n "${val:-}" ]] || continue
-        emit_metric "memtest_vulkan" "$metric" "$val" "$unit" "$better"
-      done
+  local std_passed=0
+  local std_last_iter="" std_last_w="" std_last_c=""
+  local ext_last_iter="" ext_last_w="" ext_last_c=""
+  local last_iter=""
+  local line iter w c
+  while IFS= read -r line; do
+    if [[ "$line" == *"Standard 5-minute test PASSed"* ]]; then
+      std_passed=1
+    fi
+    if [[ "$line" =~ ^[[:space:]]*([0-9]+)[[:space:]]+iteration\.[[:space:]]+Passed[[:space:]]+[0-9]+([.][0-9]+)?[[:space:]]+seconds[[:space:]]+written:[[:space:]]*[0-9]+([.][0-9]+)?GB[[:space:]]*([0-9]+([.][0-9]+)?)GB/sec[[:space:]]+checked:[[:space:]]*[0-9]+([.][0-9]+)?GB[[:space:]]*([0-9]+([.][0-9]+)?)GB/sec ]]; then
+      iter="${BASH_REMATCH[1]}"
+      w="${BASH_REMATCH[4]}"
+      c="${BASH_REMATCH[7]}"
+      last_iter="$iter"
+      if [[ "$std_passed" -eq 0 ]]; then
+        std_last_iter="$iter"
+        std_last_w="$w"
+        std_last_c="$c"
+      else
+        ext_last_iter="$iter"
+        ext_last_w="$w"
+        ext_last_c="$c"
+      fi
+    fi
+  done < <(strip_ansi < "$src")
+
+  [[ -n "$std_last_iter" ]] && emit_metric "memtest_vulkan" "std_last_iter" "$std_last_iter" "count" "higher"
+  [[ -n "$std_last_w" ]] && emit_metric "memtest_vulkan" "std_last_written_bw" "$std_last_w" "GB_s" "higher"
+  [[ -n "$std_last_c" ]] && emit_metric "memtest_vulkan" "std_last_checked_bw" "$std_last_c" "GB_s" "higher"
+  [[ -n "$ext_last_iter" ]] && emit_metric "memtest_vulkan" "ext_last_iter" "$ext_last_iter" "count" "higher"
+  [[ -n "$ext_last_w" ]] && emit_metric "memtest_vulkan" "ext_last_written_bw" "$ext_last_w" "GB_s" "higher"
+  [[ -n "$ext_last_c" ]] && emit_metric "memtest_vulkan" "ext_last_checked_bw" "$ext_last_c" "GB_s" "higher"
+  [[ -n "$last_iter" ]] && emit_metric "memtest_vulkan" "last_iter" "$last_iter" "count" "higher"
 }
 
 # -------- Comparador numérico --------
