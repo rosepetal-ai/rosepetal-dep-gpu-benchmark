@@ -1,0 +1,25 @@
+Tester console logging started at 2026-02-13T09:54:28.402711Z
+
+1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+2: Bus=0x00:02 DevId=0x9A60   12GB Intel(R) UHD Graphics (TGL GT1)
+3: Bus=0x00:00 DevId=0x0000   16GB llvmpipe (LLVM 20.1.2, 256 bits)
+Tester worker logging started at 2026-02-13T09:54:28.480261Z
+Standard 5-minute test of 1: Bus=0x01:00 DevId=0x2487   12GB NVIDIA GeForce RTX 3060
+      1 iteration. Passed  0.0592 seconds  written:    7.2GB 308.4GB/sec        checked:   10.9GB 304.6GB/sec
+     18 iteration. Passed  1.0095 seconds  written:  123.2GB 306.2GB/sec        checked:  184.9GB 304.6GB/sec
+    103 iteration. Passed  5.0463 seconds  written:  616.2GB 306.3GB/sec        checked:  924.4GB 304.6GB/sec
+    609 iteration. Passed 30.0217 seconds  written: 3668.5GB 306.5GB/sec        checked: 5502.8GB 304.8GB/sec
+   1115 iteration. Passed 30.0275 seconds  written: 3668.5GB 306.6GB/sec        checked: 5502.8GB 304.6GB/sec
+   1620 iteration. Passed 30.0014 seconds  written: 3661.2GB 306.4GB/sec        checked: 5491.9GB 304.2GB/sec
+   2126 iteration. Passed 30.0589 seconds  written: 3668.5GB 306.4GB/sec        checked: 5502.8GB 304.2GB/sec
+   2631 iteration. Passed 30.0019 seconds  written: 3661.2GB 306.4GB/sec        checked: 5491.9GB 304.2GB/sec
+   3137 iteration. Passed 30.0536 seconds  written: 3668.5GB 306.5GB/sec        checked: 5502.8GB 304.3GB/sec
+   3642 iteration. Passed 30.0530 seconds  written: 3661.2GB 307.1GB/sec        checked: 5491.9GB 302.9GB/sec
+   4149 iteration. Passed 30.0100 seconds  written: 3675.8GB 309.0GB/sec        checked: 5513.6GB 304.4GB/sec
+   4656 iteration. Passed 30.0111 seconds  written: 3675.8GB 309.0GB/sec        checked: 5513.6GB 304.3GB/sec
+Standard 5-minute test PASSed! Just press Ctrl+C unless you plan long test run.
+Extended endless test started; testing more than 2 hours is usually unneeded
+use Ctrl+C to stop it when you decide it's enough
+   5660 iteration. Passed 30.0538 seconds  written: 3683.0GB 309.1GB/sec        checked: 5524.5GB 304.6GB/sec
+   6167 iteration. Passed 30.0015 seconds  written: 3675.8GB 309.0GB/sec        checked: 5513.6GB 304.5GB/sec
+   6675 iteration. Passed 30.0585 seconds  written: 3683.0GB 309.1GB/sec        checked: 5524.5GB 304.5GB/sec

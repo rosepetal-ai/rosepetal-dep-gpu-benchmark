@@ -1,0 +1,6 @@
+timestamp=2026-02-25T10:06:58+01:00
+nvidia_smi_version=NVIDIA-SMI version  : 590.48.01 NVML version        : 590.48 DRIVER version      : 590.48.01 CUDA Version        : 13.1 
+
+query_csv:
+index,name,uuid,driver_version,pci.bus_id,pstate,tempC,powerW,powerLimitW,smMHz,memMHz,utilGpuPct,utilMemPct,memUsedMiB,memTotalMiB
+0, NVIDIA GeForce RTX 3060, GPU-5251168d-c114-7efb-8fd7-23e1eab8f8e6, 590.48.01, 00000000:01:00.0, P8, 40, 17.97, 170.00, 210, 405, 0, 43, 142, 12288
